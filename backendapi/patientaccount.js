@@ -20,20 +20,7 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((error) => console.error("MongoDB connection error:", error));
 
-// Define the Patient model
-const patientSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  profilePic: { type: String },
-  identityCard: { type: String },
-  address: { type: String, required: true },
-  otp: { type: String },
-  otpExpiration: { type: Date },
-});
-
-const Patient = mongoose.model("Patient", patientSchema);
+import { Patient } from "./src/utils/models/patient.model.js";
 
 // Set up Multer for file uploads
 const storage = multer.diskStorage({
@@ -114,7 +101,7 @@ app.post("/api/patient/login", async (req, res) => {
 
   // Create and send the JWT token
   const token = jwt.sign(
-    { email: patient.email, _id: patient._id },
+    { _id: patient._id },
     "your-secret-key"
   );
   res.json({ token });
